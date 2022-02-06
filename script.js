@@ -1,6 +1,6 @@
-let points = [];
-// let mult = 0.0004954
-let mult = 0.006
+// let points = [];
+// // let mult = 0.0004954
+// let mult = 0.006
 
 let windowWidth = window.screen.width - 15
 
@@ -8,42 +8,44 @@ let windowHeigth = window.screen.height - 135
 
 // drawing shapes
 function setup() {
-    createCanvas(windowWidth, windowHeigth);
-    background(0);
+    createCanvas(windowWidth, windowHeigth, WEBGL)
     angleMode(DEGREES)
-
-    let heigth = windowHeigth
-    let width = windowWidth
-
-    let density = 14;
-    let space = width / density;
-
-    for (let x = 0; x < width; x += space) {
-        for (let y = 0; y < heigth; y += space) {
-
-            let p = createVector(x + random(0, 10), y + random(0, 10))
-            points.push(p)
-        }
-    }
-
 }
 
 function draw() {
+    background(30)
 
-noStroke()
+    rotateX(30)
+    noFill()
+    stroke(90000)
 
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0; i < 50; i++) {
 
-        let r = map (points[i].x, random(100, 200), 0, 234  , 255)
-        let g = map (points[i].y, random(50, 100), random(150, 200), 221 , 255)
-        let b = map (points[i].y, random(50, 100), 10, 250 , 255)
+        let r = map(sin(frameCount * 0.04 ), -1, 1, 0, 100)
+        let g = map(i, 0, 20, 0, 250)
+        let b = map (cos(frameCount), -1, 1, 90, 200)
 
-        fill(r,g,b)
+        stroke(r,b,g)
 
-        let angle = map(noise(points[i].x * mult, points[i].y * mult), 0 , 8, 0 , 99000)
+        rotate(frameCount / 100)
 
-        points[i].add(createVector(sin(angle), cos(angle)  ))
+        rotateY(frameCount/120)
+        
 
-        ellipse(points[i].x, points[i].y, 1)
+        beginShape()
+        for (let j = 0; j< 5000; j += 300){
+            let rad = i * 4.5
+            let x = rad * cos(j) 
+            let y = rad * sin(j) - 10
+            var z = sin(frameCount + j * 2) * 200
+
+            vertex(x,y, z)
+        }
+
+
+
+
+        endShape(CLOSE)
+
     }
 }
